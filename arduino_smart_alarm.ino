@@ -2,6 +2,7 @@
 #include "serial_and_led.h"
 #include "oled.h"
 #include "irremote.h"
+#include "state_machine.h"
 
 // Initialization
 void setup() {
@@ -17,18 +18,12 @@ void setup() {
   initIrRemote();
 }
 
-enum STATE{
-  S_INIT = 0,
-  S_IDLE = 1
-};
-STATE state = S_INIT;
-
 void doDisplay()
 {
-//  switch(state) {
-//  case S_INIT: break;
-//  case S_IDLE: break;
-//  }
+  switch(State::get()) {
+  case S_INIT: draw(input); break;
+  case S_IDLE: break;
+  }
 }
 
 void doHandleInput()
