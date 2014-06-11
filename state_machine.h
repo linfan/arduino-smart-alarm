@@ -12,11 +12,11 @@ class State
   private:
     State() {}
   public:
-    static STATE set()
+    static STATE get()
     {
       return state;
     }
-    static void get(STATE newState)
+    static void set(STATE newState)
     {
       state = newState;
     }

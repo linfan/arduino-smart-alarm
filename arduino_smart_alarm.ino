@@ -3,6 +3,7 @@
 #include "oled.h"
 #include "irremote.h"
 #include "state_machine.h"
+#include "timer.h"
 
 // Initialization
 void setup() {
@@ -16,12 +17,14 @@ void setup() {
   initOledScreen();
   // Initialize IRremote
   initIrRemote();
+  // Initialize Timer
+  initInternalTimer();
 }
 
 void doDisplay()
 {
   switch(State::get()) {
-  case S_INIT: draw(input); break;
+  case S_INIT: break;
   case S_IDLE: break;
   }
 }
