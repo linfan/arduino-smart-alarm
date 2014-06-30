@@ -1,12 +1,44 @@
 #include "device_manager.h"
 #include "state_switcher.h"
+#include "oled_device.h"
+#include "timer_one_device.h"
+#include "net_time_device.h"
+#include "wifi_device.h"
+#include "irremote_device.h"
+#include "utility.h"
+#include "init_state.h"
+#include "config.h"
 
 // Initialization
 void setup()
 {
+    initSerialForDebug();
+    debugLog("+++++ 0 +++++");
+    DeviceManager::Ins()->setDisplayDevice(new OledDevice);
+    //DeviceManager::Ins()->setKeyboardDevice(new IrremoteDevice);
+    //DeviceManager::Ins()->setNetworkDevice(new WifiDevice);
+    //DeviceManager::Ins()->setTimerDevice(new TimerOneDevice);
+    //DeviceManager::Ins()->setRealTimeDevice(new NetTimeDevice);
+    DeviceManager::Ins()->initAllDevice();
+    StateSwitcher::Ins()->switchTo(new InitState);
+    debugLog("+++++ 1 +++++");
 }
 
 void loop()
 {
+    debugLog("+++++ 3 +++++");
+    IState* state = StateSwitcher::Ins()->getCurState();
+    IDisplayDevice* display = DeviceManager::Ins()->getDisplayDevice();
+    display->draw(state);
+    state->process();
+    delay(150);
+    debugLog("+++++ 4 +++++");
 }
+
+
+
+
+
+
+
 

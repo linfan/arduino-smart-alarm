@@ -8,9 +8,22 @@
 
 class WifiDevice : public INetworkDevice
 {
+public:
     void init();
     char* httpGet(char* url);
 };
 
 #endif
+
+
+
+
+
+
+
+
+
+
+
+
 

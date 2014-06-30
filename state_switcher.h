@@ -5,18 +5,32 @@
 
 class StateSwitcher
 {
-    StateSwitcher() {}
-    ~StateSwitcher() {}
     IState* m_curState;
  
 public:
+    StateSwitcher() {}
+    ~StateSwitcher() {}
+    
     static StateSwitcher* Ins() {
         static StateSwitcher* instance = new StateSwitcher();
         return instance;
     }   
 
+    void switchTo(IState*);
     IState* getCurState();
 };
 
 #endif
+
+
+
+
+
+
+
+
+
+
+
+
 

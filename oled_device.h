@@ -1,23 +1,34 @@
 #ifndef __SMART_ALARM_OLED_DEVICE_H__
 #define __SMART_ALARM_OLED_DEVICE_H__
 
+#include <U8glib.h>
 #include "device.h"
+#include "config.h"
 
-#define D0_PIN   10
-#define D1_PIN   9
-#define CS_PIN   12
-#define DC_PIN   11
-#define RST_PIN  13
-
+// 1.3" OLED
 class OledDevice : public IDisplayDevice
 {
+    DRAW_HANDLER* u8g;
+
 public:
     OledDevice();
-    ~OledDevice();
-
+    
     void init();
-    void draw(void (*method)(void));
+    void draw(IDrawable*);
+    DRAW_HANDLER* getDrawHandler();
 };
 
 #endif
+
+
+
+
+
+
+
+
+
+
+
+
 

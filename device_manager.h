@@ -11,12 +11,15 @@ class DeviceManager
     IKeyboardDevice* m_keyboardDevice;
     INetworkDevice* m_networkDevice;
     ITimerDevice* m_timerDevice;
+    IRealTimeDevice* m_realTimeDevice;
     
 public:
     static DeviceManager* Ins() {
         static DeviceManager* instance = new DeviceManager();
         return instance;
     }
+
+    void initAllDevice();
 
     IDisplayDevice* getDisplayDevice();
     void setDisplayDevice(IDisplayDevice* device);
@@ -30,6 +33,19 @@ public:
     ITimerDevice* getTimerDevice();
     void setTimerDevice(ITimerDevice* device);
 
+    IRealTimeDevice* getRealTimeDevice();
+    void setRealTimeDevice(IRealTimeDevice* device);
 };
 
 #endif
+
+
+
+
+
+
+
+
+
+
+
