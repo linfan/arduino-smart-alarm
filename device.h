@@ -1,6 +1,7 @@
 #ifndef __SMART_ALARM_DEVICE_H__
 #define __SMART_ALARM_DEVICE_H__
 
+#include "config.h"
 #include "drawable.h"
 
 class IDevice {
@@ -10,7 +11,7 @@ public:
 
 class IDisplayDevice : public IDevice {
 public:
-    virtual void draw(IDrawable*) = 0;
+    virtual void show(IDrawable*) = 0;
     //virtual DRAW_HANDLER* getDrawHandler() = 0;
 };
 
@@ -35,6 +36,7 @@ public:
 };
 
 #endif
+
 
 
 

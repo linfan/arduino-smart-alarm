@@ -14,11 +14,14 @@ public:
     OledDevice();
     
     void init();
-    void draw(IDrawable*);
-    DRAW_HANDLER* getDrawHandler();
+    void show(IDrawable*);
 };
 
 #endif
+
+
+
+
 
 
 

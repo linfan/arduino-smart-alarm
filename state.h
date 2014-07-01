@@ -15,10 +15,15 @@
 class IState : public IDrawable
 {
 public:
+    virtual void draw(DRAW_HANDLER*) = 0;
     virtual void process() = 0;
 };
 
 #endif
+
+
+
+
 
 
 

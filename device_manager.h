@@ -5,8 +5,7 @@
 
 class DeviceManager
 {
-    DeviceManager() {}
-    ~DeviceManager() {}
+    DeviceManager();
     IDisplayDevice* m_displayDevice;
     IKeyboardDevice* m_keyboardDevice;
     INetworkDevice* m_networkDevice;
@@ -38,6 +37,10 @@ public:
 };
 
 #endif
+
+
+
+
 
 
 

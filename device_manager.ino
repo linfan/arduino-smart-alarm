@@ -1,5 +1,14 @@
 #include "device_manager.h"
 
+DeviceManager::DeviceManager()
+{
+    m_displayDevice = NULL;
+    m_keyboardDevice = NULL;
+    m_networkDevice = NULL;
+    m_timerDevice = NULL;
+    m_realTimeDevice = NULL;
+}
+
 void DeviceManager::initAllDevice()
 {
     if(m_displayDevice) m_displayDevice->init();
@@ -43,6 +52,10 @@ IRealTimeDevice* DeviceManager::getRealTimeDevice() {
 void DeviceManager::setRealTimeDevice(IRealTimeDevice* device) {
     m_realTimeDevice = device;
 }
+
+
+
+
 
 
 

@@ -16,18 +16,13 @@ void OledDevice::init()
     u8g->setFontPosTop();
 }
 
-void OledDevice::draw(IDrawable* drawable)
+void OledDevice::show(IDrawable* drawable)
 {
     u8g->firstPage();  
     do {
         drawable->draw(u8g);
     } while( u8g->nextPage() );
 }
-
-//DRAW_HANDLER* OledDevice::getDrawHandler()
-//{
-//    return u8g;
-//}
 
 
 
