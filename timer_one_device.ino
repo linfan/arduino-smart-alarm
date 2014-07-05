@@ -1,23 +1,41 @@
 #include <TimerOne.h>
 #include "timer_one_device.h"
 
+#include "utility.h"
+#include "clock.h"
+
 void TimerOneDevice::init()
 {
     Timer1.initialize(5000000); // set a timer of length 5 sec
-    Timer1.attachInterrupt( tick ); // attach the service routine here
+    //Timer1.attachInterrupt(dumb);
+    //Timer1.stop();
 }
 
-void TimerOneDevice::setInterval(int uSec)
+void TimerOneDevice::setInterval(unsigned long uSec)
 {
     Timer1.setPeriod(uSec);
-    Timer1.restart();
 }
 
-void tick()
+void TimerOneDevice::setInterruptCallback(void (*call)())
 {
-    // Toggle LED
-    digitalWrite( 13, digitalRead( 13 ) ^ 1 );
+    Timer1.attachInterrupt(call);
 }
+
+void TimerOneDevice::startTimer()
+{
+    Timer1.resume();
+}
+
+void TimerOneDevice::stopTimer()
+{
+    Timer1.stop();
+}
+
+void dumb()
+{
+    debugLog("tick ..");
+}
+
 
 
 

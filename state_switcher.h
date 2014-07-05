@@ -8,7 +8,7 @@ class StateSwitcher
     IState* m_curState;
  
 public:
-    StateSwitcher() { m_curState = 0; }
+    StateSwitcher();
     
     static StateSwitcher* Ins() {
         static StateSwitcher* instance = new StateSwitcher();
@@ -20,6 +20,12 @@ public:
 };
 
 #endif
+
+
+
+
+
+
 
 
 

@@ -3,13 +3,21 @@
 
 #define DEBUG 1
 
-void initSerialForDebug();
-void debugLog(char* str);
-void initLedOnPin13();
-void debugLedOn();
-void debugLedOff();
+#if DEBUG
+#define initSerialForDebug() Serial.begin(9600);
+#define debugLog(data)  Serial.println(data); Serial.flush();
+#else
+#define initSerialForDebug()
+#define debugLog(data)
+#endif
 
 #endif
+
+
+
+
+
+
 
 
 

@@ -6,7 +6,6 @@ DeviceManager::DeviceManager()
     m_keyboardDevice = NULL;
     m_networkDevice = NULL;
     m_timerDevice = NULL;
-    m_realTimeDevice = NULL;
 }
 
 void DeviceManager::initAllDevice()
@@ -15,7 +14,6 @@ void DeviceManager::initAllDevice()
     if(m_keyboardDevice) m_keyboardDevice->init();
     if(m_networkDevice) m_networkDevice->init();
     if(m_timerDevice) m_timerDevice->init();
-    if(m_realTimeDevice) m_realTimeDevice->init();
 }
 
 IDisplayDevice* DeviceManager::getDisplayDevice() {
@@ -46,12 +44,9 @@ void DeviceManager::setTimerDevice(ITimerDevice* device) {
     m_timerDevice = device;
 }
 
-IRealTimeDevice* DeviceManager::getRealTimeDevice() {
-    return m_realTimeDevice;
-}
-void DeviceManager::setRealTimeDevice(IRealTimeDevice* device) {
-    m_realTimeDevice = device;
-}
+
+
+
 
 
 

@@ -3,13 +3,18 @@
 
 #include "drawable.h"
 
-#define SET_DRAW_SPPED_AND_DURATION(SPEED, DURATION) \
-    static uint8_t step = 0, speed = 0; \
-    speed++; \
-    if ( speed >= SPEED ) \
-    { \
-        speed = 0; step++; \
-        if ( step >= DURATION ) step = 0; \
+#define SET_DRAW_DURATION_AND_MAX_STEP(DURATION, STEP, REPEAT) \
+    static uint8_t step = 0, druation = 0; \
+    ++druation; \
+    if ( druation >= DURATION ) { \
+        druation = 0; ++step; \
+        if ( step >= STEP ) { \
+            if (REPEAT) { \
+                step = 0; \
+            } else { \
+                --step; \
+            } \
+        } \
     }
 
 class IState : public IDrawable
@@ -17,9 +22,16 @@ class IState : public IDrawable
 public:
     virtual void draw(DRAW_HANDLER*) = 0;
     virtual void process() = 0;
+    virtual IState* nextState() = 0;
 };
 
 #endif
+
+
+
+
+
+
 
 
 

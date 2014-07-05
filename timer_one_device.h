@@ -7,11 +7,19 @@ class TimerOneDevice : public ITimerDevice
 {
 public:
     void init();
-    void setInterval(int uSec);
-  
+    void setInterval(unsigned long uSec);
+    void setInterruptCallback(void (*call)());
+    void startTimer();
+    void stopTimer();
 };
 
 #endif
+
+
+
+
+
+
 
 
 

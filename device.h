@@ -2,6 +2,7 @@
 #define __SMART_ALARM_DEVICE_H__
 
 #include "config.h"
+#include "event.h"
 #include "drawable.h"
 
 class IDevice {
@@ -12,7 +13,6 @@ public:
 class IDisplayDevice : public IDevice {
 public:
     virtual void show(IDrawable*) = 0;
-    //virtual DRAW_HANDLER* getDrawHandler() = 0;
 };
 
 class IKeyboardDevice : public IDevice {
@@ -22,20 +22,25 @@ public:
 
 class INetworkDevice : public IDevice {
 public:
-    virtual char* httpGet(char* url) = 0;
+    virtual char* getNetworkTime() = 0;
+    virtual Event* getNthEvent(int) = 0;
 };
 
 class ITimerDevice : public IDevice {
 public:
-    virtual void setInterval(int uSec) = 0;
-};
-
-class IRealTimeDevice : public IDevice {
-public:
-    virtual unsigned long getCurTime() = 0;
+    virtual void setInterval(unsigned long uSec) = 0;
+    virtual void setInterruptCallback(void (*call)()) = 0;
+    virtual void startTimer() = 0;
+    virtual void stopTimer() = 0;
 };
 
 #endif
+
+
+
+
+
+
 
 
 

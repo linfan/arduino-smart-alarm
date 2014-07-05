@@ -8,12 +8,21 @@
 
 class WifiDevice : public INetworkDevice
 {
+private:
+    char m_buf[256];
 public:
     void init();
-    char* httpGet(char* url);
+    char* getNetworkTime();
+    Event* getNthEvent(int index);
 };
 
 #endif
+
+
+
+
+
+
 
 
 

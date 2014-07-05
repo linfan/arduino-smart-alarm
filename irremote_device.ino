@@ -64,3 +64,9 @@ char IrremoteDevice::getChar()
 
 
 
+
+
+
+
+
+

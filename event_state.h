@@ -13,11 +13,19 @@ class EventState : public IState
     Event* m_event;
 
 public:
+    EventState(Event* event);
     void draw(DRAW_HANDLER*);
     void process();
+    IState* nextState();
 };
 
 #endif
+
+
+
+
+
+
 
 
 

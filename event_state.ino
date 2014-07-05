@@ -1,5 +1,12 @@
 #include <U8glib.h>
 #include "event_state.h"
+#include "device_manager.h"
+#include "device.h"
+
+EventState::EventState(Event* event)
+{
+    m_event = event;
+}
 
 void EventState::draw_event(DRAW_HANDLER* u8g,
     char* summary, char* startTime, 
@@ -45,6 +52,16 @@ void EventState::process()
 {
 
 }
+
+IState* EventState::nextState()
+{
+    return this;
+}
+
+
+
+
+
 
 
 
