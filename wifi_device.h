@@ -4,12 +4,11 @@
 
 #include "device.h"
 
-#define CURL_BUFFER_SIZE 512
-
 class WifiDevice : public INetworkDevice
 {
 private:
     char m_buf[256];
+    char* httpGet(char* url);
 public:
     void init();
     char* getNetworkTime();
@@ -17,6 +16,10 @@ public:
 };
 
 #endif
+
+
+
+
 
 
 

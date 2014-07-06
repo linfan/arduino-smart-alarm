@@ -67,13 +67,17 @@ void InitState::process()
 void InitState::tick()
 {
     Clock::Ins()->increaseTime(5);
-    print_current_time();
+    //print_current_time();
 }
 
 IState* InitState::nextState()
 {
     return m_nextState;
 }
+
+
+
+
 
 
 

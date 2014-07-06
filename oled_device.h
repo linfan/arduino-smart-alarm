@@ -5,6 +5,11 @@
 #include "device.h"
 #include "config.h"
 
+#define BEGIN_POS_X   2
+#define BEGIN_POS_Y   6
+#define LINE_WIDTH    21
+#define LINE_HIGHT    12
+
 // 1.3" OLED
 class OledDevice : public IDisplayDevice
 {
@@ -18,6 +23,10 @@ public:
 };
 
 #endif
+
+
+
+
 
 
 
