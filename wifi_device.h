@@ -4,10 +4,12 @@
 
 #include "device.h"
 
+#define HTTP_BUFFER_SIZE 256
+
 class WifiDevice : public INetworkDevice
 {
 private:
-    char m_buf[256];
+    char m_buf[HTTP_BUFFER_SIZE];
     char* httpGet(char* url);
 public:
     void init();

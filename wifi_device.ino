@@ -37,6 +37,8 @@ char* WifiDevice::httpGet(char* url)
     for(int i = 0 ; i = 10; ++i) {
         delay(100);
         while (wifiSerial.available()) {
+            if (index >= HTTP_BUFFER_SIZE - 2) // Don't overflow
+                break;
             if (state_ok) {
                 m_buf[index] = wifiSerial.read();
                 ++index;
