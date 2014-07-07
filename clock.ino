@@ -111,8 +111,3 @@ unsigned long Clock::getTime()
     return m_nowTime;
 }
 
-
-
-
-
-

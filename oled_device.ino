@@ -24,17 +24,3 @@ void OledDevice::show(IDrawable* drawable)
     } while( u8g->nextPage() );
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-

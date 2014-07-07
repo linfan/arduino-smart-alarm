@@ -25,26 +25,3 @@ IState* ErrorState::nextState()
     return this;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

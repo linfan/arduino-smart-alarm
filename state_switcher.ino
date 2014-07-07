@@ -20,28 +20,3 @@ IState* StateSwitcher::getCurState()
     return m_curState;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

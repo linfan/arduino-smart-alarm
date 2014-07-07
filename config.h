@@ -14,30 +14,5 @@ class U8GLIB_SSD1306_132X64;
 // Arduino digital pin connected to IR receiver
 #define RECEIVER_PIN 8
 
-
 #endif
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

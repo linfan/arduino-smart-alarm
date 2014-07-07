@@ -11,6 +11,11 @@ EventState::EventState(Event* event)
     m_nextState = this;
 }
 
+EventState::~EventState()
+{
+    delete m_event;
+}
+
 void EventState::draw(DRAW_HANDLER* u8g)
 {
     int summaryLines = drawEventSummary(u8g, BEGIN_POS_X, BEGIN_POS_Y, 3, m_event->summary);
@@ -36,28 +41,4 @@ IState* EventState::nextState()
 {
     return m_nextState;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

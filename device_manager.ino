@@ -44,23 +44,3 @@ void DeviceManager::setTimerDevice(ITimerDevice* device) {
     m_timerDevice = device;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

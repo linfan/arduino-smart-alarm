@@ -58,48 +58,51 @@ char* WifiDevice::httpGet(char* url)
     return m_buf;
 }
 
-char* WifiDevice::getNetworkTime()
+void WifiDevice::extractValue(char* text, char* key, char* val)
 {
-    char* json = httpGet("/time");
-    return "2014-07-04T16:00:00+08:00";
+    val[0] = '\0';
+    char* keyBeginPos = strstr(text, key);
+    if (keyBeginPos) {
+        int keyLength = strlen(key);
+        char* keyEndPos = keyBeginPos + keyLength + 1;
+        char* valueBeginPos = strstr(keyEndPos, "\"") + 1;
+        if (valueBeginPos) {
+            char* valueEndPos = strstr(valueBeginPos, "\"");
+            if (valueEndPos) {
+                int valueLength = valueEndPos - valueBeginPos;
+                strncpy(val, valueBeginPos, valueLength);
+            }
+        }
+    }
 }
 
-Event* WifiDevice::getNthEvent(int index)
+#define WIFI_DEBUG 1
+
+void WifiDevice::getNetworkTime(char* timeStr)
+{
+    char* json = httpGet("/time");
+#if WIFI_DEBUG
+    strcpy(timeStr, "2014-07-04T16:00:00+08:00");
+#else
+    extractValue(json, time, );
+#endif
+}
+
+void WifiDevice::getNthEvent(int index, Event* event)
 {
     char* json = httpGet("/event/list?user=1");
-    // Someone should take care of this point 
-    Event* event = new Event;
+#if WIFI_DEBUG
     strcpy(event->summary, "Reminder: Submit your timesheet (Suncorp Clarity and TW)");
     strcpy(event->startTime, "2014-07-04T16:00:00+08:00");
     strcpy(event->endTime, "2014-07-04T16:15:00+08:00");
     strcpy(event->organizer, "Qi Wen");
     strcpy(event->location, "N/A");
-    return event;
+#else
+    extractValue(json, "summary", event->summary);
+    extractValue(json, "startTime", event->startTime);
+    extractValue(json, "endTime", event->endTime);
+    extractValue(json, "organizer", event->organizer);
+    extractValue(json, "location", event->location);
+#endif
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

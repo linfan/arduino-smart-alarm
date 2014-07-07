@@ -22,8 +22,8 @@ public:
 
 class INetworkDevice : public IDevice {
 public:
-    virtual char* getNetworkTime() = 0;
-    virtual Event* getNthEvent(int) = 0;
+    virtual void getNetworkTime(char*) = 0;
+    virtual void getNthEvent(int, Event*) = 0;
 };
 
 class ITimerDevice : public IDevice {
@@ -35,25 +35,4 @@ public:
 };
 
 #endif
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

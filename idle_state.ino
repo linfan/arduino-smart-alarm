@@ -38,7 +38,10 @@ void IdleState::process()
     {
         m_lastCheckTime = nowTime;
         INetworkDevice* d_network = DeviceManager::Ins()->getNetworkDevice();
-        m_nextEvent = d_network->getNthEvent(0);
+        if (m_nextEvent)
+            delete m_nextEvent;
+        m_nextEvent = new Event;
+        d_network->getNthEvent(0, m_nextEvent);
     }
     if (Clock::ToNumericTime(m_nextEvent->startTime) - nowTime < REMIND_AHEAD_TIME_IN_SECOND)
     {
@@ -50,24 +53,4 @@ IState* IdleState::nextState()
 {
     return m_nextState;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

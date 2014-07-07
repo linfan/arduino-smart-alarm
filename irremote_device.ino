@@ -49,28 +49,3 @@ char IrremoteDevice::getChar()
     return '\0';
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

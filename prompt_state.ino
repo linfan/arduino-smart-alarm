@@ -51,6 +51,3 @@ void IPromptState::drawOrganizer(DRAW_HANDLER* u8g, int posX, int posY, char* or
     drawWith4CharactersPrefix(u8g, posX, posY, "Orz:", organizer);
 }
 
-
-
-

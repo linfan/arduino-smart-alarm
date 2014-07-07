@@ -12,35 +12,11 @@ private:
     IState* m_nextState;
 public:
     EventState(Event* event);
+    ~EventState();
     void draw(DRAW_HANDLER*);
     void process();
     IState* nextState();
 };
 
 #endif
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

@@ -47,7 +47,8 @@ void InitState::process()
     neverAgain = true;
 
     INetworkDevice* d_network = DeviceManager::Ins()->getNetworkDevice();
-    char* strTime = d_network->getNetworkTime();
+    char* strTime = new char[26];
+    d_network->getNetworkTime(strTime);
     if (strlen(strTime) == 0)
     {
         m_nextState = new ErrorState("Cannot connect to internet !");
@@ -62,6 +63,7 @@ void InitState::process()
         d_timer->startTimer();
         m_nextState = new IdleState;
     }
+    delete[] strTime;
 }
 
 void InitState::tick()
@@ -74,25 +76,4 @@ IState* InitState::nextState()
 {
     return m_nextState;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
