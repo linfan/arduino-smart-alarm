@@ -1,16 +1,22 @@
-all: test_device_list test_json_parser test_clock
+RUNABLE=func_test
+SOURCE=$(wildcard *.cc)
+OBJ=$(SOURCE:.cc=.o)
+DEPENDENCE=device_list.ino clock.ino device_list.ino
+DEPENDENCE_OBJ=$(DEPENDENCE:.ino=.obj)
+
+all: compile run
+
+%.o: %.cc
+	g++ -c -I.. -o $@ -Wno-parentheses -Wno-delete-non-virtual-dtor $<
+
+%.obj: ../%.ino
+	g++ -c -I.. -o $@ -Wno-parentheses -Wno-delete-non-virtual-dtor -x c++ $<
+
+compile: $(OBJ) $(DEPENDENCE_OBJ)
+	g++ -o $(RUNABLE) $^
 
 clean:
-	ls | grep '^test_' | grep -v '.*\.cc' | xargs rm -f
+	rm -f $(RUNABLE) *.o *.obj
 
 run:
-	for file in `ls | grep '^test_' | grep -v '.*\.cc'`; do ./$$file; done
-
-test_device_list: test_device_list.cc ../device_list.ino
-	g++ -o $@ -I.. -Wno-parentheses -Wno-delete-non-virtual-dtor -x c++ $^
-
-test_clock: test_clock.cc ../clock.ino
-	g++ -o $@ -I.. -Wno-parentheses -Wno-delete-non-virtual-dtor -x c++ $^
-
-test_json_parser: test_json_parser.cc ../device_list.ino
-	g++ -o $@ -I.. -Wno-parentheses -Wno-delete-non-virtual-dtor -x c++ $^
+	./$(RUNABLE)

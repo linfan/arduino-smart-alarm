@@ -2,6 +2,8 @@
 #define __SMART_ALARM_DEVICE_MANAGER_H__
 
 #include "device.h"
+#include "notification_device.h"
+#include "device_list.h"
 
 class DeviceManager
 {
@@ -10,7 +12,10 @@ class DeviceManager
     IKeyboardDevice* m_keyboardDevice;
     INetworkDevice* m_networkDevice;
     ITimerDevice* m_timerDevice;
-    
+
+    DeviceList m_deviceList;
+    DeviceList m_notificationDeviceList;
+
 public:
     static DeviceManager* Ins() {
         static DeviceManager* instance = new DeviceManager();
@@ -18,18 +23,13 @@ public:
     }
 
     void initAllDevice();
+    void addDevice(IDevice* device);
+    void notify(Event* event);
 
     IDisplayDevice* getDisplayDevice();
-    void setDisplayDevice(IDisplayDevice* device);
-
     IKeyboardDevice* getKeyboardDevice();
-    void setKeyboardDevice(IKeyboardDevice* device);
-
     INetworkDevice* getNetworkDevice();
-    void setNetworkDevice(INetworkDevice* device);
-
     ITimerDevice* getTimerDevice();
-    void setTimerDevice(ITimerDevice* device);
 };
 
 #endif

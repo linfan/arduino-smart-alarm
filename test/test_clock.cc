@@ -1,7 +1,10 @@
 #include "clock.h"
 #include "assert.h"
 
-int main()
+TEST_CASE_FILE
+
+void test_clock()
 {
     TEST_CASE_BEGIN
+
 }

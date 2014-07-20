@@ -1,4 +1,5 @@
 #include "device_manager.h"
+#include "event.h"
 
 DeviceManager::DeviceManager()
 {
@@ -16,31 +17,44 @@ void DeviceManager::initAllDevice()
     if(m_timerDevice) m_timerDevice->init();
 }
 
+void DeviceManager::notify(Event* event)
+{
+    DeviceNode* node = m_notificationDeviceList.head();
+    while(node) {
+        INotificationDevice* notifyNode = (INotificationDevice*)(node->device());
+        notifyNode->notify(event);
+        node = node->next();
+    }
+}
+
+void DeviceManager::addDevice(IDevice* device)
+{
+    if ((INotificationDevice*)device)
+        m_notificationDeviceList.add(new DeviceNode(device));
+    if ((IDisplayDevice*)device)
+        m_displayDevice = (IDisplayDevice*)device;
+    else if ((IKeyboardDevice*)device)
+        m_keyboardDevice = (IKeyboardDevice*)device;
+    else if ((INetworkDevice*)device)
+        m_networkDevice = (INetworkDevice*)device;
+    else if ((ITimerDevice*)device)
+        m_timerDevice = (ITimerDevice*)device;
+    m_deviceList.add(new DeviceNode(device));
+}
+
 IDisplayDevice* DeviceManager::getDisplayDevice() {
     return m_displayDevice;
-}
-void DeviceManager::setDisplayDevice(IDisplayDevice* device) {
-    m_displayDevice = device;
 }
 
 IKeyboardDevice* DeviceManager::getKeyboardDevice() {
     return m_keyboardDevice;
 }
-void DeviceManager::setKeyboardDevice(IKeyboardDevice* device) {
-    m_keyboardDevice = device;
-}
 
 INetworkDevice* DeviceManager::getNetworkDevice() {
     return m_networkDevice;
 }
-void DeviceManager::setNetworkDevice(INetworkDevice* device) {
-    m_networkDevice = device;
-}
 
 ITimerDevice* DeviceManager::getTimerDevice() {
     return m_timerDevice;
-}
-void DeviceManager::setTimerDevice(ITimerDevice* device) {
-    m_timerDevice = device;
 }
 

@@ -1,6 +1,8 @@
 #include "device_list.h"
 #include "assert.h"
 
+TEST_CASE_FILE
+
 // Mock
 class IDevice
 {
@@ -11,7 +13,7 @@ public:
     int getFakeData() { return fake_data; }
 };
 
-int main()
+void test_device_list()
 {
     TEST_CASE_BEGIN
     int num[] = {125, 360};
@@ -20,10 +22,11 @@ int main()
     for (i = 0; i < size; ++i)
         list->add(new DeviceNode(new IDevice(num[i])));
     i = size - 1;
-    DeviceNode* tmpNode = list->head();
+    DeviceNode* node = list->head();
     do {
-        assert_equal(tmpNode->device()->getFakeData(), num[i]);
+        Assert::equal(node->device()->getFakeData(), num[i]);
         --i;
-    } while(tmpNode = tmpNode->next());
+    } while(node = node->next());
     delete list;
 }
+

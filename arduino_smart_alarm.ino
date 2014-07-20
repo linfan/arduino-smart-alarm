@@ -30,3 +30,4 @@ void loop()
     StateSwitcher::Ins()->switchTo(state->nextState());
     delay(150);
 }
+

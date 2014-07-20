@@ -1,1 +1,4 @@
 .DS_Store
+func_test
+*.o
+*.obj

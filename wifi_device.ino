@@ -84,7 +84,7 @@ void WifiDevice::getNetworkTime(char* timeStr)
 #if WIFI_DEBUG
     strcpy(timeStr, "2014-07-04T16:00:00+08:00");
 #else
-    extractValue(json, time, );
+    extractValue(json, "time", timeStr);
 #endif
 }
 
