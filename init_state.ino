@@ -41,17 +41,21 @@ void InitState::process()
     if (!m_animationFinished)
         return;
 
-    static bool neverAgain = false;
-    if (neverAgain)
-        return;
-    neverAgain = true;
+    //static bool neverAgain = false;
+    //if (neverAgain)
+    //    return;
+    //neverAgain = true;
 
     INetworkDevice* d_network = DeviceManager::Ins()->getNetworkDevice();
     char* strTime = new char[26];
+    debugLog("Begin get time");
     d_network->getNetworkTime(strTime);
+    //debugLog("Get time:");
+    debugLog(strTime);
     if (strlen(strTime) == 0)
     {
         m_nextState = new ErrorState("Cannot connect to internet !");
+        //debugLog("Switch to Idel state");
     }
     else
     {
@@ -62,6 +66,7 @@ void InitState::process()
         d_timer->setInterruptCallback(InitState::tick);
         d_timer->startTimer();
         m_nextState = new IdleState;
+        //debugLog("Switch to Idel state");
     }
     delete[] strTime;
 }

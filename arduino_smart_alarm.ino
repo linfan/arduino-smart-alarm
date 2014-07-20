@@ -12,10 +12,10 @@
 void setup()
 {
     initSerialForDebug();
-    DeviceManager::Ins()->setDisplayDevice(new OledDevice);
-    DeviceManager::Ins()->setKeyboardDevice(new IrremoteDevice);
-    DeviceManager::Ins()->setNetworkDevice(new WifiDevice);
-    DeviceManager::Ins()->setTimerDevice(new TimerOneDevice);
+    DeviceManager::Ins()->addDevice(new OledDevice);
+    //DeviceManager::Ins()->addDevice(new IrremoteDevice);
+    DeviceManager::Ins()->addDevice(new WifiDevice);
+    DeviceManager::Ins()->addDevice(new TimerOneDevice);
     DeviceManager::Ins()->initAllDevice();
     StateSwitcher::Ins()->switchTo(new InitState);
     debugLog("=============== Init done ==============");
@@ -30,4 +30,3 @@ void loop()
     StateSwitcher::Ins()->switchTo(state->nextState());
     delay(150);
 }
-

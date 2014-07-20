@@ -76,7 +76,7 @@ void WifiDevice::extractValue(char* text, char* key, char* val)
     }
 }
 
-#define WIFI_DEBUG 1
+#define WIFI_DEBUG 0
 
 void WifiDevice::getNetworkTime(char* timeStr)
 {
