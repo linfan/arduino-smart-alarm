@@ -1,12 +1,18 @@
 #include <string.h>
 #include <SoftwareSerial.h>
 #include "wifi_device.h"
+#include "json_parser.h"
 
 SoftwareSerial wifiSerial(2, 3); // RX, TX
 
 void WifiDevice::init()
 {
     wifiSerial.begin(4800);
+}
+
+void WifiDevice::step()
+{
+    
 }
 
 // HTTP/1.0 200 OK \n
@@ -17,7 +23,7 @@ void WifiDevice::init()
 // Cache-Control: no-cache \n
 //  \n
 
-// {"status": "OK", "events": [{"start": "2014-07-04T16:00:00+08:00", "organizer": "Qi Wen", "end": "2014-07-04T16:15:00+08:00", "location": "N/A", "summary": "Reminder: Submit your timesheet (Suncorp Clarity and TW)"}, {"start": "2014-07-07T16:30:00+08:00", "organizer": "Lanying Wu", "end": "2014-07-07T17:30:00+08:00", "location": "Ping Pang Room", "summary": "AWS training (2) - workshop"}]}
+// {"status": "OK", "events": [{"start": "2014-07-07T16:30:00+08:00", "organizer": "Lanying Wu", "end": "2014-07-07T17:30:00+08:00", "location": "Ping Pang Room", "summary": "AWS training (2) - workshop"}]}
 
 // {"status": "OK", "time": "2014-07-04T16:00:00+08:00"}
 
@@ -58,24 +64,6 @@ char* WifiDevice::httpGet(char* url)
     return m_buf;
 }
 
-void WifiDevice::extractValue(char* text, char* key, char* val)
-{
-    val[0] = '\0';
-    char* keyBeginPos = strstr(text, key);
-    if (keyBeginPos) {
-        int keyLength = strlen(key);
-        char* keyEndPos = keyBeginPos + keyLength + 1;
-        char* valueBeginPos = strstr(keyEndPos, "\"") + 1;
-        if (valueBeginPos) {
-            char* valueEndPos = strstr(valueBeginPos, "\"");
-            if (valueEndPos) {
-                int valueLength = valueEndPos - valueBeginPos;
-                strncpy(val, valueBeginPos, valueLength);
-            }
-        }
-    }
-}
-
 #define WIFI_DEBUG 0
 
 void WifiDevice::getNetworkTime(char* timeStr)
@@ -84,7 +72,7 @@ void WifiDevice::getNetworkTime(char* timeStr)
 #if WIFI_DEBUG
     strcpy(timeStr, "2014-07-04T16:00:00+08:00");
 #else
-    extractValue(json, "time", timeStr);
+    JsonParser::Ins()->extractValue(json, "time", timeStr);
 #endif
 }
 
@@ -98,11 +86,11 @@ void WifiDevice::getNthEvent(int index, Event* event)
     strcpy(event->organizer, "Qi Wen");
     strcpy(event->location, "N/A");
 #else
-    extractValue(json, "summary", event->summary);
-    extractValue(json, "startTime", event->startTime);
-    extractValue(json, "endTime", event->endTime);
-    extractValue(json, "organizer", event->organizer);
-    extractValue(json, "location", event->location);
+    JsonParser::Ins()->extractValue(json, "summary", event->summary);
+    JsonParser::Ins()->extractValue(json, "start", event->startTime);
+    JsonParser::Ins()->extractValue(json, "end", event->endTime);
+    JsonParser::Ins()->extractValue(json, "organizer", event->organizer);
+    JsonParser::Ins()->extractValue(json, "location", event->location);
 #endif
 }
 

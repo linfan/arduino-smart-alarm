@@ -11,6 +11,11 @@ void TimerOneDevice::init()
     //Timer1.stop();
 }
 
+void TimerOneDevice::step()
+{
+
+}
+
 void TimerOneDevice::setInterval(unsigned long uSec)
 {
     Timer1.setPeriod(uSec);

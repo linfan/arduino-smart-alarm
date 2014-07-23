@@ -4,6 +4,7 @@
 #include <U8glib.h>
 #include "device.h"
 #include "config.h"
+#include "event.h"
 
 #define BEGIN_POS_X   2
 #define BEGIN_POS_Y   6
@@ -19,7 +20,9 @@ public:
     OledDevice();
     
     void init();
+    void step();
     void show(IDrawable*);
+    void notify(Notification*);
 };
 
 #endif

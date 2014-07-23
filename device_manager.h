@@ -2,8 +2,8 @@
 #define __SMART_ALARM_DEVICE_MANAGER_H__
 
 #include "device.h"
-#include "notification_device.h"
 #include "device_list.h"
+#include "notification.h"
 
 class DeviceManager
 {
@@ -24,7 +24,8 @@ public:
 
     void initAllDevice();
     void addDevice(IDevice* device);
-    void notify(Event* event);
+    void notify(Notification* noti);
+    void process();
 
     IDisplayDevice* getDisplayDevice();
     IKeyboardDevice* getKeyboardDevice();

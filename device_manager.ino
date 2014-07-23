@@ -17,14 +17,25 @@ void DeviceManager::initAllDevice()
     if(m_timerDevice) m_timerDevice->init();
 }
 
-void DeviceManager::notify(Event* event)
+void DeviceManager::process()
+{
+    DeviceNode* node = m_deviceList.head();
+    while(node) {
+        IDevice* notifyNode = node->device();
+        notifyNode->step();
+        node = node->next();
+    }
+}
+
+void DeviceManager::notify(Notification* noti)
 {
     DeviceNode* node = m_notificationDeviceList.head();
     while(node) {
         INotificationDevice* notifyNode = (INotificationDevice*)(node->device());
-        notifyNode->notify(event);
+        notifyNode->notify(noti);
         node = node->next();
     }
+    delete noti;
 }
 
 void DeviceManager::addDevice(IDevice* device)

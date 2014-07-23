@@ -4,13 +4,22 @@
 #include "config.h"
 #include "event.h"
 #include "drawable.h"
+#include "event.h"
+#include "notification.h"
 
 class IDevice {
 public:
     virtual void init() = 0;
+    virtual void step() = 0;
 };
 
-class IDisplayDevice : public IDevice {
+class INotificationDevice : public IDevice
+{
+public:
+    virtual void notify(Notification*) = 0;
+};
+
+class IDisplayDevice : public INotificationDevice {
 public:
     virtual void show(IDrawable*) = 0;
 };

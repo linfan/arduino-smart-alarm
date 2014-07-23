@@ -11,9 +11,9 @@ class WifiDevice : public INetworkDevice
 private:
     char m_buf[HTTP_BUFFER_SIZE];
     char* httpGet(char* url);
-    void extractValue(char* text, char* key, char* val);
 public:
     void init();
+    void step();
     void getNetworkTime(char* timeStr);
     void getNthEvent(int index, Event* event);
 };
