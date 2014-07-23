@@ -16,7 +16,8 @@ public:
 void test_device_list()
 {
     TEST_CASE_BEGIN
-    int num[] = {125, 360};
+
+    int num[] = {125, 360, 2048};
     int i, size = sizeof(num)/sizeof(int);
     DeviceList* list = new DeviceList;
     for (i = 0; i < size; ++i)
