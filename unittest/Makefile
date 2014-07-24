@@ -1,4 +1,4 @@
-RUNABLE=func_test
+RUNABLE=unittest
 SOURCE=$(wildcard *.cc)
 OBJ=$(SOURCE:.cc=.o)
 DEPENDENCE=device_list.ino clock.ino json_parser.ino
