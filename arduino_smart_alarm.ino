@@ -1,11 +1,9 @@
 #include "device_manager.h"
-#include "state_switcher.h"
 #include "oled_device.h"
 #include "timer_one_device.h"
 #include "wifi_device.h"
 #include "irremote_device.h"
 #include "utility.h"
-#include "init_state.h"
 #include "config.h"
 
 // Initialization

@@ -2,3 +2,4 @@
 func_test
 *.o
 *.obj
+state/*

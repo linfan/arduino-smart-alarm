@@ -3,8 +3,6 @@
 
 #include "config.h"
 #include "event.h"
-#include "drawable.h"
-#include "event.h"
 #include "notification.h"
 
 class IDevice {
@@ -21,7 +19,7 @@ public:
 
 class IDisplayDevice : public INotificationDevice {
 public:
-    virtual void show(IDrawable*) = 0;
+    //virtual void show(IDrawable*) = 0;
 };
 
 class IKeyboardDevice : public IDevice {

@@ -8,11 +8,12 @@
 class DeviceManager
 {
     DeviceManager();
-    IDisplayDevice* m_displayDevice;
-    IKeyboardDevice* m_keyboardDevice;
-    INetworkDevice* m_networkDevice;
-    ITimerDevice* m_timerDevice;
+    //IDisplayDevice* m_displayDevice;
+    //IKeyboardDevice* m_keyboardDevice;
+    //INetworkDevice* m_networkDevice;
+    //ITimerDevice* m_timerDevice;
 
+    void exec_notification();
     DeviceList m_deviceList;
     DeviceList m_notificationDeviceList;
 
@@ -27,10 +28,10 @@ public:
     void notify(Notification* noti);
     void process();
 
-    IDisplayDevice* getDisplayDevice();
-    IKeyboardDevice* getKeyboardDevice();
-    INetworkDevice* getNetworkDevice();
-    ITimerDevice* getTimerDevice();
+    //IDisplayDevice* getDisplayDevice();
+    //IKeyboardDevice* getKeyboardDevice();
+    //INetworkDevice* getNetworkDevice();
+    //ITimerDevice* getTimerDevice();
 };
 
 #endif

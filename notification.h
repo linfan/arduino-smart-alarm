@@ -3,7 +3,8 @@
 
 enum NotificationType
 {
-    WELCOME_SCREEN_DONE,
+    INIT_BEING,
+    INIT_SCREEN_FINISH,
     INIT_FINISH,
     NEW_EVENT
 };
