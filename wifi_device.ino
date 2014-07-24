@@ -94,3 +94,31 @@ void WifiDevice::getNthEvent(int index, Event* event)
 #endif
 }
 
+void WifiDevice::initLocalTime()
+{
+    char* strTime = new char[26];
+    debugLog("Begin get time");
+    getNetworkTime(strTime);
+
+    debugLog(strTime);
+    if (strlen(strTime) == 0)
+    {
+        DeviceManager::Ins()->notify(new Notification(ERROR, "Cannot connect to internet !"));
+    }
+    else
+    {
+        Clock::Ins()->setTime(Clock::ToNumericTime(strTime));
+        DeviceManager::Ins()->notify(new Notification(INIT_FINISH, NULL));
+    }
+}
+
+void WifiDevice::notify(Notification* noti)
+{
+    switch(noti->type)
+    {
+    case INIT_SCREEN_FINISH:
+        initLocalTime();
+        break;
+    }
+}
+

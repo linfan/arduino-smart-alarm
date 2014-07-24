@@ -17,7 +17,7 @@ typedef void (*DRAW_METHOD)(DRAW_HANDLER*);
 
 enum OledState
 {
-    IDLE,
+    OLED_IDLE,
     SHOW_WELCOME_SCREEN,
     SHOW_NEXT_EVENT,
     SHOW_EVENT_DETAIL
@@ -40,6 +40,7 @@ class OledDevice : public IDisplayDevice
     void drawNextEvent();
     void drawEventDetail();
 
+    void setEventToShow(Event*);
 public:
     OledDevice();
     

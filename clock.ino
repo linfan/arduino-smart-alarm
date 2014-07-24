@@ -7,11 +7,6 @@
 unsigned long Clock::baseYear = 2000;
 unsigned int Clock::dayInMonth[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
-Clock::Clock()
-{
-    m_nowTime = 457804890; // For testing
-}
-
 bool Clock::isLeapYear(unsigned long year)
 {
     return ( ((year%4)==0 && (year%100)!=0) || (year%400)==0 );

@@ -9,6 +9,7 @@ class IrremoteDevice : public IKeyboardDevice
 public:
     void init();
     void step();
+    void notify(Notification*);
     char translateIR();
     char getChar();
 };

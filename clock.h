@@ -4,7 +4,7 @@
 class Clock
 {
 private:
-    Clock();
+    Clock() : m_nowTime(0UL) {}
     unsigned long m_nowTime;
 
     static unsigned long getSecondsBeforeSpecifiedMonth(unsigned long month, bool isLeapYear);

@@ -11,9 +11,11 @@ class WifiDevice : public INetworkDevice
 private:
     char m_buf[HTTP_BUFFER_SIZE];
     char* httpGet(char* url);
+    void initLocalTime();
 public:
     void init();
     void step();
+    void notify(Notification*);
     void getNetworkTime(char* timeStr);
     void getNthEvent(int index, Event* event);
 };

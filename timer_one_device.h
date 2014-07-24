@@ -8,6 +8,7 @@ class TimerOneDevice : public ITimerDevice
 public:
     void init();
     void step();
+    void notify(Notification*);
     void setInterval(unsigned long uSec);
     void setInterruptCallback(void (*call)());
     void startTimer();

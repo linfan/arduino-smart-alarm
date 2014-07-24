@@ -27,7 +27,8 @@
 OledDevice::OledDevice()
 {
     u8g = new DRAW_HANDLER(D0_PIN, D1_PIN,CS_PIN, DC_PIN, RST_PIN);
-    m_state = IDLE;
+    m_state = OLED_IDLE;
+    m_event_to_show = NULL;
 }
 
 void OledDevice::init()
@@ -137,7 +138,7 @@ void OledDevice::drawWelcomeScreen()
     if (step == MAX_STEP - 1)
     {
         DeviceManager::Ins()->notify(new Notification(INIT_SCREEN_FINISH, NULL));
-        m_state = IDLE;
+        m_state = OLED_IDLE;
     }
 }
 
@@ -145,7 +146,7 @@ void OledDevice::step()
 {
     switch (m_state)
     {
-    case IDLE:
+    case OLED_IDLE:
         break;
     case SHOW_WELCOME_SCREEN:
         drawWelcomeScreen();
@@ -157,12 +158,30 @@ void OledDevice::step()
     }
 }
 
+void OledDevice::setEventToShow(Event* event)
+{
+    if (m_event_to_show)
+        delete m_event_to_show;
+    m_event_to_show = event;
+}
+
 void OledDevice::notify(Notification* noti)
 {
     switch(noti->type)
     {
+    case IDLE_WAIT:
+        m_state = SHOW_WELCOME_SCREEN;
+        break;
     case INIT_BEING:
         m_state = SHOW_WELCOME_SCREEN;
+        break;
+    case WAIT_FOR_EVENT:
+        m_state = SHOW_WELCOME_SCREEN;
+        setEventToShow((Event*)noti->data);
+        break;
+    case EVENT_COMMING:
+        m_state = SHOW_WELCOME_SCREEN;
+        setEventToShow((Event*)noti->data);
         break;
     }
 }

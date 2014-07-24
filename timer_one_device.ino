@@ -4,16 +4,21 @@
 #include "utility.h"
 #include "clock.h"
 
+#define print_current_time() \
+    char strTime[26]; \
+    Clock::ToStandardTime(Clock::Ins()->getTime(), strTime); \
+    debugLog(strTime);
+
 void TimerOneDevice::init()
 {
-    Timer1.initialize(5000000); // set a timer of length 5 sec
-    //Timer1.attachInterrupt(dumb);
-    //Timer1.stop();
+    stopTimer();
+    setInterval(5000000); // set a timer of length 5 sec
+    setInterruptCallback(tick);
+    startTimer();
 }
 
 void TimerOneDevice::step()
 {
-
 }
 
 void TimerOneDevice::setInterval(unsigned long uSec)
@@ -36,8 +41,9 @@ void TimerOneDevice::stopTimer()
     Timer1.stop();
 }
 
-void dumb()
+void tick()
 {
-    debugLog("tick ..");
+    Clock::Ins()->increaseTime(5);
+    //print_current_time();
 }
 

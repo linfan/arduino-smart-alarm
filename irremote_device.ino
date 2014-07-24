@@ -54,3 +54,8 @@ char IrremoteDevice::getChar()
     return '\0';
 }
 
+void IrremoteDevice::notify(Notification*)
+{
+
+}
+

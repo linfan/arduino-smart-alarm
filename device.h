@@ -9,15 +9,10 @@ class IDevice {
 public:
     virtual void init() = 0;
     virtual void step() = 0;
-};
-
-class INotificationDevice : public IDevice
-{
-public:
     virtual void notify(Notification*) = 0;
 };
 
-class IDisplayDevice : public INotificationDevice {
+class IDisplayDevice : public IDevice {
 public:
     //virtual void show(IDrawable*) = 0;
 };

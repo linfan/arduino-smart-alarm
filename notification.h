@@ -3,18 +3,21 @@
 
 enum NotificationType
 {
+    IDLE_WAIT,
+    ERROR,
     INIT_BEING,
     INIT_SCREEN_FINISH,
     INIT_FINISH,
-    NEW_EVENT
+    WAIT_FOR_EVENT,
+    EVENT_COMMING
 };
 
 class Notification
 {
 public:
     NotificationType type;
-    void* data;
-    Notification(NotificationType t, void* d)
+    const void* data;
+    Notification(NotificationType t, const void* d)
         : type(t), data(d) {}
     ~Notification() {}
 };
