@@ -18,16 +18,16 @@ typedef void (*DRAW_METHOD)(DRAW_HANDLER*);
 enum OledState
 {
     OLED_IDLE,
-    SHOW_WELCOME_SCREEN,
-    SHOW_NEXT_EVENT,
-    SHOW_EVENT_DETAIL
+    OLED_SHOW_WELCOME_SCREEN,
+    OLED_SHOW_NEXT_EVENT,
+    OLED_SHOW_EVENT_DETAIL
 };
 
 // 1.3" OLED
 class OledDevice : public IDisplayDevice
 {
     DRAW_HANDLER* u8g;
-    OledState m_state;
+    OledState m_oledState;
     Event* m_event_to_show;
 
     void drawWith4CharactersPrefix(DRAW_HANDLER*, int, int, const char*, char*);

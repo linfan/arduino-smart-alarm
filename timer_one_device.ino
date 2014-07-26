@@ -11,39 +11,33 @@
 
 void TimerOneDevice::init()
 {
-    stopTimer();
-    setInterval(5000000); // set a timer of length 5 sec
-    setInterruptCallback(tick);
-    startTimer();
+    Timer1.initialize(1000000);
+    Timer1.stop();
 }
 
 void TimerOneDevice::step()
-{
-}
-
-void TimerOneDevice::setInterval(unsigned long uSec)
-{
-    Timer1.setPeriod(uSec);
-}
-
-void TimerOneDevice::setInterruptCallback(void (*call)())
-{
-    Timer1.attachInterrupt(call);
-}
-
-void TimerOneDevice::startTimer()
-{
-    Timer1.resume();
-}
-
-void TimerOneDevice::stopTimer()
-{
-    Timer1.stop();
-}
+{}
 
 void tick()
 {
     Clock::Ins()->increaseTime(5);
     //print_current_time();
+}
+
+void TimerOneDevice::beginTick()
+{
+    Timer1.attachInterrupt(tick);
+    Timer1.setPeriod(5000000); // set a timer of length 5 sec
+    Timer1.resume();
+}
+
+void TimerOneDevice::notify(Notification* noti)
+{ 
+    switch(noti->type)
+    {
+    case NOTI_INIT_FINISH:
+        beginTick();
+        break;
+    }
 }
 

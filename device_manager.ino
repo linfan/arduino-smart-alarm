@@ -1,5 +1,7 @@
 #include "device_manager.h"
 #include "event.h"
+#include "notification.h"
+#include "utility.h"
 
 #define FOREACH_DEVICE(CODE) \
     DeviceNode* node = m_deviceList.head(); \
@@ -18,6 +20,8 @@ void DeviceManager::initAllDevice()
     FOREACH_DEVICE(
         device->init();
     )
+    debugLog(NOTI_INIT_BEGIN);
+    notify(new Notification(NOTI_INIT_BEGIN, NULL));
 }
 
 void DeviceManager::process()
@@ -29,6 +33,8 @@ void DeviceManager::process()
 
 void DeviceManager::notify(Notification* noti)
 {
+    debugPrint(">> Sent notification ");
+    debugLog((int)(noti->type));
     FOREACH_DEVICE(
         device->notify(noti);
     )

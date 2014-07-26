@@ -5,14 +5,11 @@
 
 class TimerOneDevice : public ITimerDevice
 {
+    void beginTick();
 public:
     void init();
     void step();
     void notify(Notification*);
-    void setInterval(unsigned long uSec);
-    void setInterruptCallback(void (*call)());
-    void startTimer();
-    void stopTimer();
 };
 
 #endif

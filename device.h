@@ -13,8 +13,6 @@ public:
 };
 
 class IDisplayDevice : public IDevice {
-public:
-    //virtual void show(IDrawable*) = 0;
 };
 
 class IKeyboardDevice : public IDevice {
@@ -23,17 +21,9 @@ public:
 };
 
 class INetworkDevice : public IDevice {
-public:
-    virtual void getNetworkTime(char*) = 0;
-    virtual void getNthEvent(int, Event*) = 0;
 };
 
 class ITimerDevice : public IDevice {
-public:
-    virtual void setInterval(unsigned long uSec) = 0;
-    virtual void setInterruptCallback(void (*call)()) = 0;
-    virtual void startTimer() = 0;
-    virtual void stopTimer() = 0;
 };
 
 #endif

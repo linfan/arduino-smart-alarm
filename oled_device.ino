@@ -3,6 +3,7 @@
 #include "device_manager.h"
 #include "config.h"
 #include "event.h"
+#include "notification.h"
 
 #define SET_DRAW_DURATION_AND_MAX_STEP(DURATION, STEP, REPEAT) \
     static uint8_t step = 0, druation = 0; \
@@ -27,13 +28,13 @@
 OledDevice::OledDevice()
 {
     u8g = new DRAW_HANDLER(D0_PIN, D1_PIN,CS_PIN, DC_PIN, RST_PIN);
-    m_state = OLED_IDLE;
+    m_oledState = OLED_IDLE;
     m_event_to_show = NULL;
 }
 
 void OledDevice::init()
 { 
-    //u8g->setRot180();  // flip screen, if required
+    u8g->setRot180();  // flip screen, if required
     pinMode(RST_PIN, OUTPUT);           
     digitalWrite(RST_PIN, HIGH);
     u8g->setFont(u8g_font_6x10);
@@ -126,8 +127,9 @@ void OledDevice::drawEventDetail()
 
 void OledDevice::drawWelcomeScreen()
 {
+    debugLog("drawing welcome screen..");
     const int MAX_STEP = 10;
-    SET_DRAW_DURATION_AND_MAX_STEP(16, MAX_STEP, false)
+    SET_DRAW_DURATION_AND_MAX_STEP(1, MAX_STEP, false)
     SHOW(
         u8g->drawStr( 2, 8, "Welcome ^_^   (v1.0)");
         u8g->setScale2x2();
@@ -137,23 +139,24 @@ void OledDevice::drawWelcomeScreen()
     )
     if (step == MAX_STEP - 1)
     {
-        DeviceManager::Ins()->notify(new Notification(INIT_SCREEN_FINISH, NULL));
-        m_state = OLED_IDLE;
+        DeviceManager::Ins()->notify(new Notification(NOTI_INIT_SCREEN_FINISH, NULL));
+        m_oledState = OLED_IDLE;
     }
 }
 
 void OledDevice::step()
 {
-    switch (m_state)
+    switch (m_oledState)
     {
     case OLED_IDLE:
         break;
-    case SHOW_WELCOME_SCREEN:
+    case OLED_SHOW_WELCOME_SCREEN:
         drawWelcomeScreen();
         break;
-    case SHOW_NEXT_EVENT:
+    case OLED_SHOW_NEXT_EVENT:
+        drawNextEvent();
         break;
-    case SHOW_EVENT_DETAIL:
+    case OLED_SHOW_EVENT_DETAIL:
         break;
     }
 }
@@ -167,21 +170,26 @@ void OledDevice::setEventToShow(Event* event)
 
 void OledDevice::notify(Notification* noti)
 {
+    debugPrint("OLED receive notification: ");
+    debugLog(noti->type);
     switch(noti->type)
     {
-    case IDLE_WAIT:
-        m_state = SHOW_WELCOME_SCREEN;
+    case NOTI_IDLE_WAIT:
+        m_oledState = OLED_IDLE;
         break;
-    case INIT_BEING:
-        m_state = SHOW_WELCOME_SCREEN;
+    case NOTI_INIT_BEGIN:
+        m_oledState = OLED_SHOW_WELCOME_SCREEN;
         break;
-    case WAIT_FOR_EVENT:
-        m_state = SHOW_WELCOME_SCREEN;
+    case NOTI_EVENT_CHANGE:
+        m_oledState = OLED_SHOW_NEXT_EVENT;
         setEventToShow((Event*)noti->data);
         break;
-    case EVENT_COMMING:
-        m_state = SHOW_WELCOME_SCREEN;
+    case NOTI_EVENT_COMMING:
+        m_oledState = OLED_SHOW_EVENT_DETAIL;
         setEventToShow((Event*)noti->data);
+        break;
+    case NOTI_ERROR:
+        m_oledState = OLED_IDLE;
         break;
     }
 }
