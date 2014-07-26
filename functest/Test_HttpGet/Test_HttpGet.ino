@@ -9,25 +9,28 @@ void setup()
     
     wifiSerial.begin(4800);
 
-    doGet();
-    for(int i = 0 ; i = 10; ++i) {
-        delay(100);
-        while (wifiSerial.available())
-            Serial.write(wifiSerial.read());
-    }
+    doGet("/event/list?user=1&lazy=1");
+    //doGet("/time");
 }
 
 void loop()
 {}
 
-void doGet()
+void doGet(char *url)
 {
-     //wifiSerial.println("GET /event/list?user=1 HTTP/1.0");
-     wifiSerial.println("GET /time HTTP/1.0");
-     wifiSerial.println("");
-     wifiSerial.println("Connection: close");
-     wifiSerial.println("Host: the-1.net:9999");
-     wifiSerial.println();
-     Serial.println("send >>");
+    Serial.println("send >>");
+    wifiSerial.print("GET ");
+    wifiSerial.print(url);
+    wifiSerial.println(" HTTP/1.0");
+    wifiSerial.println("");
+    wifiSerial.println("Connection: close");
+    wifiSerial.println();
+    
+    Serial.println("receive >>");
+    for(int i = 0 ; i = 10; ++i) {
+        delay(50);
+        while (wifiSerial.available())
+            Serial.write(wifiSerial.read());
+    }
 }
 

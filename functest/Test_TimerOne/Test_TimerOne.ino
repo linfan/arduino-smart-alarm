@@ -2,8 +2,6 @@
 
 void initTimer()
 {
-    Timer1.initialize(1000000); // set a timer of length 1 sec
-    Timer1.stop();
 }
 
 void setInterval(unsigned long uSec)
@@ -35,7 +33,8 @@ void setup()
 {
     // put your setup code here, to run once:
     Serial.begin(9600);
-    initTimer();
+    Timer1.initialize(1000000); // set a timer of length 1 sec
+    stopTimer();
     setInterruptCallback(dumb);
     setInterval(2000000);  // change interval to 2 seconds
     startTimer();
