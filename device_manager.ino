@@ -20,7 +20,6 @@ void DeviceManager::initAllDevice()
     FOREACH_DEVICE(
         device->init();
     )
-    debugLog(NOTI_INIT_BEGIN);
     notify(new Notification(NOTI_INIT_BEGIN, NULL));
 }
 
@@ -33,8 +32,8 @@ void DeviceManager::process()
 
 void DeviceManager::notify(Notification* noti)
 {
-    debugPrint(">> Sent notification ");
-    debugLog((int)(noti->type));
+    debugPPrint("Sent notification ");
+    debugLog(noti->type);
     FOREACH_DEVICE(
         device->notify(noti);
     )

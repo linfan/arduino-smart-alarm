@@ -5,9 +5,10 @@
 #include "clock.h"
 
 #define print_current_time() \
-    char strTime[26]; \
-    Clock::ToStandardTime(Clock::Ins()->getTime(), strTime); \
-    debugLog(strTime);
+    Clock::ToStandardTime(Clock::Ins()->getTime(), p_buf); \
+    debugPrint(p_buf); \
+    debugPPrint(" => "); \
+    debugLog(Clock::Ins()->getTime());
 
 void TimerOneDevice::init()
 {
@@ -21,7 +22,7 @@ void TimerOneDevice::step()
 void tick()
 {
     Clock::Ins()->increaseTime(5);
-    //print_current_time();
+    print_current_time();
 }
 
 void TimerOneDevice::beginTick()

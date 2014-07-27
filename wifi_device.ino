@@ -28,24 +28,29 @@ void WifiDevice::init()
 
 // {"status": "OK", "time": "2014-07-04T16:00:00+08:00"}
 
+#define wifiSent(data)     wifiSerial.print(data)
+#define wifiSentLn(data)   wifiSerial.println(data)
+#define wifiPmSent(data)   P_BUF(data) wifiSerial.print(p_buf)
+#define wifiPmSentLn(data) P_BUF(data) wifiSerial.println(p_buf)
+
 char* WifiDevice::httpGet(char* url)
 {
-     wifiSerial.print("GET ");
-     wifiSerial.print(url);
-     wifiSerial.println(" HTTP/1.0");
-     wifiSerial.println("");
-     wifiSerial.println("Connection: close");
-     wifiSerial.println();
+     wifiPmSent("GET ");
+     wifiSent(url);
+     wifiPmSentLn(" HTTP/1.0");
+     wifiPmSentLn("");
+     wifiPmSentLn("Connection: close");
+     wifiSentLn();
      char header_buf[15] = {'\0'}; // sizeof("\"status\": \"OK\"") + 1
      bool state_ok = false;
      bool too_much_data = false;
      int index = 0;
     // It'll spend ~1 min to get all data
-    debugLog("==== HEAD >>");
+    debugPLog("==== HEAD >>");
     for(int i = 0 ; i <= 50; ++i) {
         delay(20);
         if (too_much_data) {
-            debugLog("\nToo much data 0_0!");
+            debugPLog("\nToo much data 0_0!");
             break;
         }
         while (wifiSerial.available()) {
@@ -65,7 +70,7 @@ char* WifiDevice::httpGet(char* url)
                 debugPrint(header_buf[13]);
                 if (strcmp(header_buf, "\"status\": \"OK\"") == 0)
                 {
-                    debugLog("\n==== << HEAD\nGet OK state ^^!");
+                    debugPLog("\n==== << HEAD\nGet OK state ^^!");
                     state_ok = true;
                 }
             }
@@ -74,12 +79,12 @@ char* WifiDevice::httpGet(char* url)
     }
     m_buf[index] = '\0';
     if (!state_ok) {
-        debugLog("Cannot get OK state : (");
+        debugPLog("Cannot get OK state : (");
         return "";
     }
-    debugLog("==== BODY >>");
+    debugPLog("==== BODY >>");
     debugLog(m_buf);
-    debugLog("==== << BODY");
+    debugPLog("==== << BODY");
     return m_buf;
 }
 
@@ -88,7 +93,7 @@ char* WifiDevice::httpGet(char* url)
 void WifiDevice::getNetworkTime(char* timeStr)
 {
 #if WIFI_DEBUG
-    strcpy(timeStr, "2014-07-04T16:00:00+08:00");
+    strpncpy(timeStr, "2014-07-04T16:00:00+08:00", 26);
 #else
     char* json = httpGet("/time");
     JsonParser::Ins()->extractValue(json, "time", timeStr);
@@ -98,13 +103,13 @@ void WifiDevice::getNetworkTime(char* timeStr)
 void WifiDevice::getNthEvent(int index, Event* event)
 {
 #if WIFI_DEBUG
-    strcpy(event->summary, "Reminder: Submit your timesheet (Suncorp Clarity and TW)");
-    strcpy(event->startTime, "2014-07-04T16:00:00+08:00");
-    strcpy(event->endTime, "2014-07-04T16:15:00+08:00");
-    strcpy(event->organizer, "Qi Wen");
-    strcpy(event->location, "N/A");
+    strpcpy(event->summary, "Reminder: Submit your timesheet (Suncorp Clarity and TW)");
+    strpcpy(event->startTime, "2014-07-04T16:00:00+08:00");
+    strpcpy(event->endTime, "2014-07-04T16:15:00+08:00");
+    strpcpy(event->organizer, "Qi Wen");
+    strpcpy(event->location, "N/A");
 #else
-    debugLog("Begin get event");
+    debugPLog("Geting event ..");
     //char* json = httpGet("/event/list?user=1");
     //delay(2000);
     char* json = httpGet("/event/list?user=1&lazy=1");
@@ -119,22 +124,22 @@ void WifiDevice::getNthEvent(int index, Event* event)
 void WifiDevice::initLocalTime()
 {
     char strTime[26];
-    debugLog("Begin get time");
+//    debugPLog("Begin get time");
     getNetworkTime(strTime);
-    debugPrint(">> Init time: ");
+    debugPPrint(">> Init time: ");
     debugPrint(strTime);
-    debugPrint(" [");
+    debugPPrint(" [");
     debugPrint(strlen(strTime));
-    debugLog("]");
+    debugPLog("]");
 
-    //if (strcmp("", strTime) == 0)
     if (strlen(strTime) == 0)
     {
-        debugLog("Get time failed, retry..");
+        debugPLog("Get time failed, retry..");
         //DeviceManager::Ins()->notify(new Notification(NOTI_ERROR, "Cannot connect to internet !"));
     }
     else
     {
+        debugPLog("Set clock..");
         Clock::Ins()->setTime(Clock::ToNumericTime(strTime));
         DeviceManager::Ins()->notify(new Notification(NOTI_INIT_FINISH, NULL));
     }
@@ -143,15 +148,15 @@ void WifiDevice::initLocalTime()
 void WifiDevice::updateEvent()
 {
     char startTime[26];
-    debugLog("Begin update event..");
-    strcpy(startTime, m_nextEvent->startTime);
+    debugPLog("Begin update event..");
+//    strcpy(startTime, m_nextEvent->startTime);
     getNthEvent(0, m_nextEvent);
     if (strcmp("", m_nextEvent->startTime) == 0)
     {
-        debugLog("Get event failed, retry..");
-        //DeviceManager::Ins()->notify(new Notification(NOTI_ERROR, NULL));
+        debugPLog("Get event failed, retry..");
+//        //DeviceManager::Ins()->notify(new Notification(NOTI_ERROR, NULL));
     }
-    else if (strcmp(startTime, m_nextEvent->startTime) != 0)
+    else //if (strcmp(startTime, m_nextEvent->startTime) != 0)
     {
         DeviceManager::Ins()->notify(new Notification(NOTI_EVENT_CHANGE, m_nextEvent));
     }
@@ -161,8 +166,8 @@ void WifiDevice::step()
 {
     switch (m_wifiState)
     {
-    case WIFI_IDLE:
-        break;
+//    case WIFI_IDLE:
+//        break;
     case WIFI_INIT_TIME:
         initLocalTime();
         break;
@@ -185,9 +190,9 @@ void WifiDevice::notify(Notification* noti)
     case NOTI_EVENT_CHANGE:
         m_wifiState = WIFI_IDLE;
         break;
-    case NOTI_ERROR:
-        m_wifiState = WIFI_IDLE;
-        break;
+//    case NOTI_ERROR:
+//        m_wifiState = WIFI_IDLE;
+//        break;
     }
 }
 

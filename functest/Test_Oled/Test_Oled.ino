@@ -21,7 +21,7 @@ void OledDevice_init()
     digitalWrite(13, HIGH);
     u8g->setFont(u8g_font_6x10);
     u8g->setFontRefHeightExtendedText();
-    u8g->setDefaultForegroundColor();
+//    u8g->setDefaultForegroundColor();
     u8g->setFontPosTop();
 }
 
@@ -53,7 +53,7 @@ void draw_welcome_page()
     u8g->undoScale();
 }
 
-void draw_event(char* summary, char* startTime, char* endTime, char* location)
+void draw_event(const char* summary, char* startTime, char* endTime, char* location)
 {
     const int BEGIN_POS_X = 2;
     const int BEGIN_POS_Y = 6;
@@ -85,9 +85,15 @@ void draw_event(char* summary, char* startTime, char* endTime, char* location)
     u8g->drawStr( BEGIN_POS_X + 30, BEGIN_POS_Y + 4 * LINE_HIGHT, l_buf);
 }
 
+#define STR(name) ARDUINO_STR_SECTION(name)
+#define ARDUINO_STR_SECTION(name) ARDUINO_SECTION(".progmem." name)
+#define ARDUINO_SECTION(name) __attribute__ ((section (name)))
+
+const char a_long_str[] STR("a_long_str") = "A_123456789_B_123456789_C_123456789_D_123456789_E_123456789_F_123456789_G_123456789";
+
 void draw_text()
 {
-    draw_event("A_123456789_B_123456789_C_123456789_D_123456789_E_123456789_F_123456789_G_123456789", "12:12", "22:22", "ABCDEFGHIJKLMGOPQRSTUVWXZY");
+    draw_event(a_long_str, "12:12", "22:22", "ABCDEFGHIJKLMGOPQRSTUVWXZY");
 }
 
 void setup(void) {
@@ -97,8 +103,8 @@ void setup(void) {
 
 void loop(void) {
     // picture loop
-    //OledDevice_draw(draw_text);
-    OledDevice_draw(draw_welcome_page);
+    OledDevice_draw(draw_text);
+    //OledDevice_draw(draw_welcome_page);
 
     // rebuild the picture after some delay
     delay(150);

@@ -13,10 +13,9 @@ void setup()
     DeviceManager::Ins()->addDevice(new OledDevice);
     //DeviceManager::Ins()->addDevice(new IrremoteDevice);
     DeviceManager::Ins()->addDevice(new WifiDevice);
-    //DeviceManager::Ins()->addDevice(new TimerOneDevice);
-    //debugLog("=============== 3 ==============");
+    DeviceManager::Ins()->addDevice(new TimerOneDevice);
     DeviceManager::Ins()->initAllDevice();
-    debugLog("=============== Init done ==============");
+    debugPLog("=============== Init done ==============");
 }
 
 void loop()

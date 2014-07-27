@@ -39,7 +39,6 @@ void OledDevice::init()
     digitalWrite(RST_PIN, HIGH);
     u8g->setFont(u8g_font_6x10);
     u8g->setFontRefHeightExtendedText();
-    u8g->setDefaultForegroundColor();
     u8g->setFontPosTop();
 }
 
@@ -62,7 +61,7 @@ void OledDevice::drawStartEndTime(DRAW_HANDLER* u8g, int posX, int posY,
                                   char* startDateTime, char* endDateTime)
 {
     char startTime[6] = {'\0'}, endTime[6] = {'\0'};
-    for (int i = 0; i < 6; ++i) {
+    for (int i = 0; i < 5; ++i) {
         startTime[i] = startDateTime[i+11];
         endTime[i] = endDateTime[i+11];
     }
@@ -97,14 +96,16 @@ void OledDevice::drawOrganizer(DRAW_HANDLER* u8g, int posX, int posY, char* orga
 void OledDevice::drawNextEvent()
 {
     SHOW(
-        u8g->drawStr( BEGIN_POS_X, BEGIN_POS_Y, "[[ Next Event ]]");
+        P_BUF("[[ Next Event ]]")
+        u8g->drawStr( BEGIN_POS_X, BEGIN_POS_Y, p_buf);
+        P_BUF("====================")
         u8g->drawStr( BEGIN_POS_X, 
-            BEGIN_POS_Y + 1 * LINE_HIGHT, "====================");
+            BEGIN_POS_Y + 1 * LINE_HIGHT, p_buf);
         drawStartEndTime(u8g, BEGIN_POS_X, BEGIN_POS_Y + 2 * LINE_HIGHT,
                          m_event_to_show->startTime, m_event_to_show->endTime);
-        drawLocation(u8g, BEGIN_POS_X, BEGIN_POS_Y + 3 * LINE_HIGHT, 
-            m_event_to_show->location);
-        drawEventSummary(u8g, BEGIN_POS_X, BEGIN_POS_Y + 4 * LINE_HIGHT, 1, 
+        //drawLocation(u8g, BEGIN_POS_X, BEGIN_POS_Y + 3 * LINE_HIGHT, 
+        //    m_event_to_show->location);
+        drawEventSummary(u8g, BEGIN_POS_X, BEGIN_POS_Y + 3 * LINE_HIGHT, 2, 
             m_event_to_show->summary);
     )
 }
@@ -127,20 +128,22 @@ void OledDevice::drawEventDetail()
 
 void OledDevice::drawWelcomeScreen()
 {
-    debugLog("drawing welcome screen..");
+    debugPLog("drawing welcome screen..");
     const int MAX_STEP = 10;
     SET_DRAW_DURATION_AND_MAX_STEP(1, MAX_STEP, false)
     SHOW(
-        u8g->drawStr( 2, 8, "Welcome ^_^   (v1.0)");
+        P_BUF("Welcome ^_^   (v1.0)")
+        u8g->drawStr( 2, 8, p_buf);
         u8g->setScale2x2();
-        u8g->drawStr( 3, 4 + step, "I Have ");
-        u8g->drawStr( 24, 12 + step, "A Date");
+        P_BUF("I Have ")
+        u8g->drawStr( 3, 4 + step, p_buf);
+        P_BUF("A Date")
+        u8g->drawStr( 24, 12 + step, p_buf);
         u8g->undoScale();
     )
     if (step == MAX_STEP - 1)
     {
         DeviceManager::Ins()->notify(new Notification(NOTI_INIT_SCREEN_FINISH, NULL));
-        m_oledState = OLED_IDLE;
     }
 }
 
@@ -148,16 +151,16 @@ void OledDevice::step()
 {
     switch (m_oledState)
     {
-    case OLED_IDLE:
-        break;
+//    case OLED_IDLE:
+//        break;
     case OLED_SHOW_WELCOME_SCREEN:
         drawWelcomeScreen();
         break;
     case OLED_SHOW_NEXT_EVENT:
         drawNextEvent();
-        break;
-    case OLED_SHOW_EVENT_DETAIL:
-        break;
+//        break;
+//    case OLED_SHOW_EVENT_DETAIL:
+//        break;
     }
 }
 
@@ -170,27 +173,31 @@ void OledDevice::setEventToShow(Event* event)
 
 void OledDevice::notify(Notification* noti)
 {
-    debugPrint("OLED receive notification: ");
+    debugPPrint("OLED receive notification: ");
     debugLog(noti->type);
+    
     switch(noti->type)
     {
-    case NOTI_IDLE_WAIT:
-        m_oledState = OLED_IDLE;
-        break;
+//    case NOTI_IDLE_WAIT:
+//        m_oledState = OLED_IDLE;
+//        break;
     case NOTI_INIT_BEGIN:
         m_oledState = OLED_SHOW_WELCOME_SCREEN;
+        break;
+    case NOTI_INIT_SCREEN_FINISH:
+        m_oledState = OLED_IDLE;
         break;
     case NOTI_EVENT_CHANGE:
         m_oledState = OLED_SHOW_NEXT_EVENT;
         setEventToShow((Event*)noti->data);
         break;
-    case NOTI_EVENT_COMMING:
-        m_oledState = OLED_SHOW_EVENT_DETAIL;
-        setEventToShow((Event*)noti->data);
-        break;
-    case NOTI_ERROR:
-        m_oledState = OLED_IDLE;
-        break;
+//    case NOTI_EVENT_COMMING:
+//        m_oledState = OLED_SHOW_EVENT_DETAIL;
+//        setEventToShow((Event*)noti->data);
+//        break;
+//    case NOTI_ERROR:
+//        m_oledState = OLED_IDLE;
+//        break;
     }
 }
 
