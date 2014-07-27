@@ -1,5 +1,6 @@
-#include "irremote_device.h"
 #include <IRremote.h>  // IR remote control
+#include "irremote_device.h"
+#include "utility.h"
 
 int receiver = RECEIVER_PIN;
 
@@ -49,13 +50,70 @@ char IrremoteDevice::getChar()
     return '\0';
 }
 
-void IrremoteDevice::step()
+void IrremoteDevice::waitForReset()
 {
-
+    switch(getChar())
+    {
+    case '*':  // Re-initialize system
+        DeviceManager::Ins()->notify(new Notification(NOTI_INIT_BEGIN, NULL));
+        break;
+    }
 }
 
-void IrremoteDevice::notify(Notification*)
+void IrremoteDevice::waitForEvent()
 {
+    switch(getChar())
+    {
+    case '*':  // Show next event
+        DeviceManager::Ins()->notify(new Notification(NOTI_SHOW_NEXT_EVENT, NULL));
+        break;
+    case '#':  // Reflush event cache now
+        DeviceManager::Ins()->notify(new Notification(NOTI_EVENT_UPDATE, NULL));
+        break;
+    }
+}
 
+void IrremoteDevice::waitForRespond()
+{
+    switch(getChar())
+    {
+    case '*':  // Stop reminding current event
+        DeviceManager::Ins()->notify(new Notification(NOTI_SKIP_EVENT, NULL));
+        break;
+    }
+}
+
+void IrremoteDevice::step()
+{
+    switch (m_irState)
+    {
+    case IR_IDLE:
+        break;
+    case IR_ERROR_HANDLE:
+        waitForReset();
+        break;
+    case IR_WAITING:
+        waitForEvent();
+        break;
+    case IR_EVENT_COMMING:
+        waitForRespond();
+        break;
+    }
+}
+
+void IrremoteDevice::notify(Notification* noti)
+{
+    switch(noti->type)
+    {
+    case NOTI_WAIT:
+        m_irState = IR_WAITING;
+        break;
+    case NOTI_EVENT_COMMING:
+        m_irState = IR_EVENT_COMMING;
+        break;
+    case NOTI_ERROR:
+        m_irState = IR_ERROR_HANDLE;
+        break;
+    }
 }
 

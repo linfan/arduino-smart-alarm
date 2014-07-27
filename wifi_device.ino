@@ -118,8 +118,8 @@ void WifiDevice::getNthEvent(int index, Event* event)
     strpcpy(event->location, "N/A");
 #else
     debugPLog("Geting event ..");
-    //char* json = httpGet("/event/list?user=1");
-    //delay(2000);
+    httpGet("/event/list?user=1");
+    delay(2000);
     char* json = httpGet("/event/list?user=1&lazy=1");
     JsonParser::Ins()->extractValue(json, "summary", event->summary);
     JsonParser::Ins()->extractValue(json, "start", event->startTime);
@@ -135,7 +135,7 @@ void WifiDevice::initLocalTime()
 {
     static int retry_times = 0;
     char strTime[26];
-//    debugPLog("Begin get time");
+    debugPLog("Begin get time");
     getNetworkTime(strTime);
     debugPPrint(">> Init time: ");
     debugPrint(strTime);
@@ -166,9 +166,7 @@ void WifiDevice::initLocalTime()
 void WifiDevice::updateEvent()
 {
     static int retry_times = 0;
-//    char startTime[26];
     debugPLog("Begin update event..");
-//    strcpy(startTime, m_nextEvent->startTime);
     getNthEvent(0, m_nextEvent);
     if (strcmp("", m_nextEvent->startTime) == 0)
     {
@@ -206,14 +204,14 @@ void WifiDevice::checkEvent()
     }
 }
 
-void waitEventFinish()
+void WifiDevice::waitEventFinish()
 {
     unsigned long curTime = Clock::Ins()->getTime();
     unsigned long nextEventTime = Clock::Ins()->ToNumericTime(m_nextEvent->startTime);
     // Do not update m_nextEvent in this state
     if (nextEventTime - curTime < 0)
     {
-        DeviceManager::Ins()->notify(new Notification(NOTI_EVENT_UPDATE, NULL));   
+        DeviceManager::Ins()->notify(new Notification(NOTI_EVENT_UPDATE, NULL));
     }
 }
 

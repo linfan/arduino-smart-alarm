@@ -35,7 +35,7 @@ OledDevice::OledDevice()
 
 void OledDevice::init()
 { 
-    u8g->setRot180();  // flip screen, if required
+    //u8g->setRot180();  // flip screen, if required
     pinMode(RST_PIN, OUTPUT);           
     digitalWrite(RST_PIN, HIGH);
     u8g->setFont(u8g_font_6x10);
@@ -109,7 +109,7 @@ void OledDevice::drawOrganizer(DRAW_HANDLER* u8g, int posX, int posY, char* orga
 
 void OledDevice::drawNextEvent()
 {
-    debugPLog("drawing next event screen ..");
+    //debugPLog("drawing next event screen ..");
     SHOW(
         P_BUF("[[ Next Event ]]")
         u8g->drawStr( BEGIN_POS_X, BEGIN_POS_Y, p_buf);
@@ -121,8 +121,8 @@ void OledDevice::drawNextEvent()
         drawEventSummary(u8g, BEGIN_POS_X, BEGIN_POS_Y + 3 * LINE_HIGHT, 2, 
             m_event_to_show->summary);
     )
-    debugPLog("delay 1 sec..");
-    delay(1000);  // 5 seconds
+    debugPLog("delay 5 sec..");
+    delay(5000);  // 5 seconds
     DeviceManager::Ins()->notify(new Notification(NOTI_WAIT, NULL));
 }
 
@@ -144,7 +144,7 @@ void OledDevice::drawEventDetail()
 
 void OledDevice::drawWelcomeScreen()
 {
-    debugPLog("drawing welcome screen..");
+    //debugPLog("drawing welcome screen..");
     const int MAX_STEP = 10;
     SET_DRAW_DURATION_AND_MAX_STEP(1, MAX_STEP, false)
     SHOW(
@@ -163,9 +163,23 @@ void OledDevice::drawWelcomeScreen()
     }
 }
 
+void OledDevice::drawUpdating()
+{
+    SHOW(
+        P_BUF("[ Downloading data")
+        u8g->drawStr( BEGIN_POS_X, BEGIN_POS_Y, p_buf);
+        P_BUF(" from internet .. ]")
+        u8g->drawStr( BEGIN_POS_X, BEGIN_POS_Y + 1 * LINE_HIGHT, p_buf);
+        u8g->setScale2x2();
+        P_BUF("Loading ..")
+        u8g->drawStr( BEGIN_POS_X + 4, BEGIN_POS_Y + 1 * LINE_HIGHT, p_buf);
+        u8g->undoScale();
+    )
+}
+
 void OledDevice::drawErrorScreen()
 {
-    debugPLog("drawing error screen..");
+    //debugPLog("drawing error screen..");
     SHOW(
         P_BUF("[[ Error ]]")
         u8g->drawStr( BEGIN_POS_X, BEGIN_POS_Y, p_buf);
@@ -178,7 +192,7 @@ void OledDevice::drawErrorScreen()
 
 void OledDevice::drawTime()
 {
-    debugPLog("drawing time screen..");
+    //debugPLog("drawing time screen..");
     SHOW(
         Clock::ToStandardTime(Clock::Ins()->getTime(), p_buf);
         p_buf[10] = '\0';
@@ -208,24 +222,16 @@ void OledDevice::step()
     case OLED_SHOW_NEXT_EVENT:
         drawNextEvent();
         break;
+    case OLED_SHOW_UPDATING:
+        drawUpdating();
+        break;
     case OLED_WAIT:
         drawTime();
         break;
-//    case OLED_SHOW_EVENT_DETAIL:
-//        break;
+    case OLED_SHOW_EVENT_DETAIL:
+        drawEventDetail();
+        break;
     }
-}
-
-void OledDevice::setEventToShow(Event* event)
-{
-//    if (m_event_to_show)
-//        delete m_event_to_show;
-    m_event_to_show = event;
-}
-
-void OledDevice::setErrorString(const char* error)
-{
-    m_error_string = error;
 }
 
 void OledDevice::notify(Notification* noti)
@@ -239,19 +245,23 @@ void OledDevice::notify(Notification* noti)
         m_oledState = OLED_SHOW_WELCOME_SCREEN;
         break;
     case NOTI_INIT_SCREEN_FINISH:
-        m_oledState = OLED_IDLE;
+        m_oledState = OLED_SHOW_UPDATING;
         break;
     case NOTI_WAIT:
         m_oledState = OLED_WAIT;
         break;
     case NOTI_SHOW_NEXT_EVENT:
         m_oledState = OLED_SHOW_NEXT_EVENT;
+        if (noti->data)
+            m_event_to_show = ((Event*)noti->data);
+        break;
+    case NOTI_EVENT_UPDATE:
+        m_oledState = OLED_SHOW_UPDATING;
+        break;
+    case NOTI_EVENT_COMMING:
+        m_oledState = OLED_SHOW_EVENT_DETAIL;
         m_event_to_show = ((Event*)noti->data);
         break;
-//    case NOTI_EVENT_COMMING:
-//        m_oledState = OLED_SHOW_EVENT_DETAIL;
-//        setEventToShow((Event*)noti->data);
-//        break;
     case NOTI_ERROR:
         m_oledState = OELD_SHOW_ERROR;
         m_error_string = ((const char*)noti->data);

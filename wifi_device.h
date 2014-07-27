@@ -7,7 +7,7 @@
 #define HTTP_BUFFER_SIZE 256
 #define NOTIFY_HEAD_TIME 300L  // 5 mins
 #define UPDATE_INTERVAL 600L   // 10 mins
-#define WIFI_DEBUG 1
+#define WIFI_DEBUG 0
 
 enum WifiState
 {

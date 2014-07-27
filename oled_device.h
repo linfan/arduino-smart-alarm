@@ -22,6 +22,7 @@ enum OledState
     OLED_SHOW_WELCOME_SCREEN,
     OLED_SHOW_NEXT_EVENT,
     OLED_SHOW_EVENT_DETAIL,
+    OLED_SHOW_UPDATING,
     OLED_WAIT
 };
 
@@ -45,9 +46,7 @@ class OledDevice : public IDisplayDevice
     void drawEventDetail();
     void drawErrorScreen();
     void drawTime();
-
-    void setEventToShow(Event*);
-    void setErrorString(const char*);
+    void drawUpdating();
 public:
     OledDevice();
     

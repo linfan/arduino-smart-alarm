@@ -10,7 +10,8 @@ enum NotificationType
     NOTI_EVENT_UPDATE,
     NOTI_WAIT,
     NOTI_EVENT_COMMING,
-    NOTI_SHOW_NEXT_EVENT
+    NOTI_SHOW_NEXT_EVENT,
+    NOTI_SKIP_EVENT
 };
 
 class Notification
