@@ -11,11 +11,6 @@ void IrremoteDevice::init()
     irrecv.enableIRIn(); // Start the receiver
 }
 
-void IrremoteDevice::step()
-{
-
-}
-
 char IrremoteDevice::translateIR()
 {
     switch(results.value)   // describing KEYES Remote IR codes 
@@ -52,6 +47,11 @@ char IrremoteDevice::getChar()
         return key;
     }
     return '\0';
+}
+
+void IrremoteDevice::step()
+{
+
 }
 
 void IrremoteDevice::notify(Notification*)

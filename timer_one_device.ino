@@ -21,14 +21,14 @@ void TimerOneDevice::step()
 
 void tick()
 {
-    Clock::Ins()->increaseTime(5);
-    print_current_time();
+    Clock::Ins()->increaseTime(1);
+    //print_current_time();
 }
 
 void TimerOneDevice::beginTick()
 {
     Timer1.attachInterrupt(tick);
-    Timer1.setPeriod(5000000); // set a timer of length 5 sec
+    Timer1.setPeriod(1000000); // set a timer of length 1 sec
     Timer1.resume();
 }
 

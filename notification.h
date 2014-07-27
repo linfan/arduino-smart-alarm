@@ -3,13 +3,14 @@
 
 enum NotificationType
 {
-    NOTI_IDLE_WAIT           = 0,
-    NOTI_ERROR               = 1,
-    NOTI_INIT_BEGIN          = 2,
-    NOTI_INIT_SCREEN_FINISH  = 3,
-    NOTI_INIT_FINISH         = 4,
-    NOTI_EVENT_CHANGE        = 5,
-    NOTI_EVENT_COMMING       = 6
+    NOTI_ERROR,
+    NOTI_INIT_BEGIN,
+    NOTI_INIT_SCREEN_FINISH,
+    NOTI_INIT_FINISH,
+    NOTI_EVENT_UPDATE,
+    NOTI_WAIT,
+    NOTI_EVENT_COMMING,
+    NOTI_SHOW_NEXT_EVENT
 };
 
 class Notification

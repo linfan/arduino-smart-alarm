@@ -7,31 +7,28 @@ void JsonParser::extractValue(char* text, char* key, char* val)
     val[0] = '\0';
     debugPPrint(">> Extracting [");
     debugPrint(key)
-    debugPPrint("] from [");
-    debugPrint(text)
-    debugPLog("]");
     char* keyBeginPos = strstr(text, key);
     if (keyBeginPos) {
-        debugPPrint("Get key begin pos: ");
-        debugLog(keyBeginPos - text);
+        //debugPPrint("Get key begin pos: ");
+        //debugLog(keyBeginPos - text);
         int keyLength = strlen(key);
         char* keyEndPos = keyBeginPos + keyLength + 1;
         char* valueBeginPos = strstr(keyEndPos, "\"") + 1;
         if (valueBeginPos) {
-            debugPPrint("Get value begin pos: ");
-            debugLog(valueBeginPos - text);
+            //debugPPrint("Get value begin pos: ");
+            //debugLog(valueBeginPos - text);
             char* valueEndPos = strstr(valueBeginPos, "\"");
             if (valueEndPos) {
-                debugPPrint("Get value end pos: ");
-                debugLog(valueEndPos - text);
+                //debugPPrint("Get value end pos: ");
+                //debugLog(valueEndPos - text);
                 int valueLength = valueEndPos - valueBeginPos;
                 strncpy(val, valueBeginPos, valueLength);
                 val[valueLength] = '\0';
-                debugPLog("String copied.");
+                //debugPLog("String copied.");
             }
         }
     }
-    debugPPrint("Get [");
+    debugPPrint("] get [");
     debugPrint(val);
     debugPLog("]");
 }
