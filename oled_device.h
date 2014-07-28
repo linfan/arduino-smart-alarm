@@ -2,6 +2,7 @@
 #define __SMART_ALARM_OLED_DEVICE_H__
 
 #include "device.h"
+#include "event.h"
 #include "notification.h"
 
 #define BEGIN_POS_X   2
@@ -27,7 +28,7 @@ enum OledState
 };
 
 // 1.3" OLED
-class OledDevice : public IDisplayDevice
+class OledDevice : public IDevice
 {
     DRAW_HANDLER* u8g;
     OledState m_oledState;

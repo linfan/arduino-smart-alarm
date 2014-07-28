@@ -18,7 +18,7 @@ enum WifiState
     WIFI_WAIT_EVENT_FINISH
 };
 
-class WifiDevice : public INetworkDevice
+class WifiDevice : public IDevice
 {
 private:
     char m_buf[HTTP_BUFFER_SIZE];

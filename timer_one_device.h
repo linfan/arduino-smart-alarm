@@ -3,7 +3,7 @@
 
 #include "device.h"
 
-class TimerOneDevice : public ITimerDevice
+class TimerOneDevice : public IDevice
 {
     void beginTick();
 public:

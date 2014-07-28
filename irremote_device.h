@@ -12,7 +12,7 @@ enum IrState
     IR_EVENT_COMMING
 };
 
-class IrremoteDevice : public IKeyboardDevice
+class IrremoteDevice : public IDevice
 {
 private:
     IrState m_irState;
