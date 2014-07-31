@@ -11,5 +11,8 @@
 // Arduino digital pin connected to IR receiver
 #define RECEIVER_PIN 8
 
+// Light control pin
+#define LIGHT_CONTROL_PIN 7
+
 #endif
 
